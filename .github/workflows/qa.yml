@@ -1,0 +1,36 @@
+name: QA - Calculator Project
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  qa-check:
+    name: Basic QA Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Repo checkout
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Verify project structure
+      - name: Verify required files
+        run: |
+          echo "Checking project files..."
+          test -f index.html
+          test -f style.css
+          test -f script.js
+
+      # Step 3: HTML basic validation
+      - name: HTML validation
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tidy
+          tidy -e index.html
+
+      # Step 4: QA success message
+      - name: QA Status
+        run: echo "✅ QA checks passed successfully"
